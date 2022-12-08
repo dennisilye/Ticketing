@@ -9,6 +9,8 @@ import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
+import * as dotenv from 'dotenv' 
+dotenv.config()
 
 const app = express();
 app.use(json());
@@ -26,14 +28,14 @@ app.use(errorHandler);
 
 const start = async () => {
   try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {});
+    await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.6eqgzua.mongodb.net/ticketing?retryWrites=true&w=majority`, {});
     console.log("Connected to MongoDb");
   } catch (err) {
     console.error(err);
   }
 
   app.listen(3000, () => {
-    console.log("Listening on port 3000!!!!!!!!");
+    console.log(`Listening on port ${process.env.PORT}`);
   });
 };
 
