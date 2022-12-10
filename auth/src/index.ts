@@ -19,7 +19,7 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: true,
+    // secure: true,
   })
 );
 
@@ -35,6 +35,10 @@ app.all("*", async (req, res) => {
 app.use(errorHandler);
 
 const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY MUST BE DEFINED");
+  }
+
   try {
     await mongoose.connect(
       `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.6eqgzua.mongodb.net/ticketing?retryWrites=true&w=majority`,
