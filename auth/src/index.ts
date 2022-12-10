@@ -9,11 +9,19 @@ import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
-import * as dotenv from 'dotenv' 
-dotenv.config()
+import * as dotenv from "dotenv";
+import cookieSession from "cookie-session";
+dotenv.config();
 
 const app = express();
+app.set("trust proxy", true);
 app.use(json());
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  })
+);
 
 app.use(currentUserRouter);
 app.use(signinRouter);
@@ -28,7 +36,10 @@ app.use(errorHandler);
 
 const start = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.6eqgzua.mongodb.net/ticketing?retryWrites=true&w=majority`, {});
+    await mongoose.connect(
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.6eqgzua.mongodb.net/ticketing?retryWrites=true&w=majority`,
+      {}
+    );
     console.log("Connected to MongoDb");
   } catch (err) {
     console.error(err);
