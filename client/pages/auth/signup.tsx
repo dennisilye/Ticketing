@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import useRequest from "../../hooks/use-request";
+import Router from "next/router";
+
 
 export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<any[]>([]);
+  const [doRequest, errors] = useRequest({
+    url: "http://localhost:3004/api/users/signup",
+    method: "post",
+    body: { email, password },
+    onSuccess: () => Router.push("/")
+  });
 
   const onSubmit = async (event: any) => {
     event.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3004/api/users/signup",
-        { email, password }
-      );
-      console.log("response", response);
-    } catch (error: any) {
-      console.log(`in onSubmit error ${error.response.data}`);
-      setErrors(error.response.data.errors);
-    }
+    doRequest();
   };
 
   return (
@@ -34,12 +33,12 @@ export default () => {
       />
       <label>Password</label>
       <input
-        type="text"
+        type="password"
         className="form-control"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
-      {errors.map((error) => error.message)}
+      {errors}
       <button className="btn btn-primary">Sign Up</button>
     </form>
   );
