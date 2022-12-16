@@ -48,6 +48,7 @@ router.post(
       jwt: userJwt,
     };
 
+    console.log("New user created: " + user.email);
     res.status(201).send(user);
   }
 );

@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
+import cors from "cors";
 
 import { currentUserRouter } from "./routes/current-user";
 import { signinRouter } from "./routes/signin";
@@ -21,6 +22,11 @@ app.use(
     // secure: true,
   })
 );
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use(currentUserRouter);
 app.use(signinRouter);
@@ -33,4 +39,4 @@ app.all("*", async (req, res) => {
 
 app.use(errorHandler);
 
-export { app }
+export { app };
