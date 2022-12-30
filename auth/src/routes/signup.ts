@@ -43,10 +43,15 @@ router.post(
       },
       process.env.JWT_KEY!
     );
+    console.log("userJwt",userJwt);
+    
 
     req.session = {
       jwt: userJwt,
     };
+
+  console.log("req.session", req.session);
+
 
     console.log("New user created: " + user.email);
     res.status(201).send(user);

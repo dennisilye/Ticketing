@@ -19,11 +19,17 @@ export default ({
   const doRequest = async () => {
     try {
       setErrors(null);
-      const response: any = await axios[method](url, body);
+      const response: any = await axios[method](url, body, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
 
       if (response.data) {
         onSuccess(response.data);
       }
+      
 
       return response.data;
     } catch (err: any) {
