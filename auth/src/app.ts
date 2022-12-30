@@ -14,17 +14,21 @@ import cookieSession from "cookie-session";
 dotenv.config();
 
 const app = express();
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    // secure: true,
+    secure: false,
+    sameSite: 'none',
+
   })
 );
 app.use(
   cors({
-    origin: "*",
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
   })
 );
 
